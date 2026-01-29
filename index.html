@@ -7,229 +7,194 @@
   <!-- Google Font -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link
-    href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400..700&display=swap"
-    rel="stylesheet"
-  />
+  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400..700&display=swap" rel="stylesheet">
 
   <style>
-/* ================== YOUR CSS START ================== */
+    body {
+      background-color: #f0e6f6;
+      margin: 0;
+      padding: 0;
+    }
 
-#envelope {
-  position: relative;
-  width: 280px;
-  height: 180px;
-  border-bottom-left-radius: 6px;
-  border-bottom-right-radius: 6px;
-  margin-left: auto;
-  margin-right: auto;
-  top: 150px;
-  background-color: #d9534f;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
-}
+    .envlope-wrapper {
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+    }
 
-.front {
-  position: absolute;
-  width: 0;
-  height: 0;
-  z-index: 3;
-}
+    /* ---------- ORIGINAL ENVELOPE ---------- */
+    #envelope {
+      position: relative;
+      width: 280px;
+      height: 180px;
+      background-color: #d9534f;
+      border-bottom-left-radius: 6px;
+      border-bottom-right-radius: 6px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+      transform-origin: center;
+    }
 
-.flap {
-  border-left: 140px solid transparent;
-  border-right: 140px solid transparent;
-  border-bottom: 82px solid transparent;
-  border-top: 98px solid #d9534f;
-  transform-origin: top;
-  pointer-events: none;
-}
+    .front { position: absolute; width:0; height:0; z-index:3; }
 
-.pocket {
-  border-left: 140px solid #f5a3a2;
-  border-right: 140px solid #f5a3a2;
-  border-bottom: 90px solid #ff6f61;
-  border-top: 90px solid transparent;
-  border-bottom-left-radius: 6px;
-  border-bottom-right-radius: 6px;
-}
+    .flap {
+      border-left:140px solid transparent;
+      border-right:140px solid transparent;
+      border-bottom:82px solid transparent;
+      border-top:98px solid #d9534f;
+      transform-origin: top;
+      pointer-events: none;
+    }
 
-.letter {
-  position: relative;
-  background-color: #fff;
-  width: 90%;
-  margin-left: auto;
-  margin-right: auto;
-  height: 90%;
-  top: 5%;
-  border-radius: 6px;
-  box-shadow: 0 2px 26px rgba(0, 0, 0, 0.12);
-  font-family: "Dancing Script", cursive;
-}
+    .pocket {
+      border-left:140px solid #f5a3a2;
+      border-right:140px solid #f5a3a2;
+      border-bottom:90px solid #ff6f61;
+      border-top:90px solid transparent;
+      border-bottom-left-radius:6px;
+      border-bottom-right-radius:6px;
+    }
 
-.words {
-  position: absolute;
-  left: 10%;
-  width: 80%;
-  height: 14%;
-  background-color: #ffe6e6;
-}
+    .letter {
+      position: relative;
+      background-color: #fff;
+      width: 90%;
+      height: 90%;
+      margin: auto;
+      top: 5%;
+      border-radius:6px;
+      box-shadow: 0 2px 26px rgba(0,0,0,0.12);
+      font-family: "Dancing Script", cursive;
+    }
 
-.words.line1 {
-  top: 10%;
-  width: 20%;
-  height: 7%;
-  font-size: 0.7rem;
-}
+    .words { position: absolute; left:10%; width:80%; text-align:center; }
+    .line1 { top:10%; font-size:0.7rem; }
+    .line2 { top:30%; font-size:1.1rem; }
+    .line3 { top:50%; font-size:1.1rem; }
+    .line4 { top:70%; font-size:1.1rem; }
 
-.words.line2 {
-  top: 30%;
-  text-align: center;
-  font-size: 1.1rem;
-}
+    /* ---------- OPEN / CLOSE ---------- */
+    .open .flap {
+      transform: rotateX(180deg);
+      transition: transform 0.4s ease, z-index 0.6s;
+      z-index:1;
+    }
 
-.words.line3 {
-  top: 50%;
-  text-align: center;
-  font-size: 1.1rem;
-}
+    .close .flap {
+      transform: rotateX(0deg);
+      transition: transform 0.4s 0.6s ease, z-index 1s;
+      z-index:5;
+    }
 
-.words.line4 {
-  top: 70%;
-  text-align: center;
-  font-size: 1.1rem;
-}
+    .close .letter {
+      transform: translateY(0);
+      transition: transform 0.4s ease;
+      z-index:1;
+    }
 
-.open .flap {
-  transform: rotateX(180deg);
-  transition: transform 0.4s ease, z-index 0.6s;
-  z-index: 1;
-}
+    .open .letter {
+      transform: translateY(-100px);
+      transition: transform 0.4s 0.6s ease;
+      z-index:2;
+    }
 
-.close .flap {
-  transform: rotateX(0deg);
-  transition: transform 0.4s 0.6s ease, z-index 1s;
-  z-index: 5;
-}
+    /* ---------- HEARTS ORIGINAL EFFECT ---------- */
+    .hearts {
+      position: absolute;
+      top: 90px;
+      left: 0;
+      right: 0;
+      z-index:2;
+    }
 
-.close .letter {
-  transform: translateY(0px);
-  transition: transform 0.4s ease;
-  z-index: 1;
-}
+    .heart {
+      position: absolute;
+      bottom: 0;
+      pointer-events: none;
+    }
 
-.open .letter {
-  transform: translateY(-100px);
-  transition: transform 0.4s 0.6s ease;
-  z-index: 2;
-}
+    .heart:before, .heart:after {
+      content: "";
+      position: absolute;
+      left: 50px;
+      top: 0;
+      width: 50px;
+      height: 80px;
+      background: #e60073;
+      border-radius: 50px 50px 0 0;
+      transform: rotate(-45deg);
+      transform-origin: 0 100%;
+    }
 
-.hearts {
-  position: absolute;
-  top: 90px;
-  left: 0;
-  right: 0;
-  z-index: 2;
-}
+    .heart:after {
+      left:0;
+      transform: rotate(45deg);
+      transform-origin: 100% 100%;
+    }
 
-.heart {
-  position: absolute;
-  bottom: 0;
-  right: 10%;
-  pointer-events: none;
-}
+    .close .heart { opacity:0; animation:none; }
 
-.heart:before,
-.heart:after {
-  content: "";
-  position: absolute;
-  left: 50px;
-  top: 0;
-  width: 50px;
-  height: 80px;
-  background: #e60073;
-  border-radius: 50px 50px 0 0;
-  transform: rotate(-45deg);
-  transform-origin: 0 100%;
-}
+    /* Heart Animations */
+    .a1 {
+      left: 20%;
+      transform: scale(0.6);
+      animation: slideUp 4s linear 1, sideSway 2s ease-in-out 4 alternate;
+      animation-fill-mode: forwards;
+      animation-delay: 0.7s;
+    }
 
-.heart:after {
-  left: 0;
-  transform: rotate(45deg);
-  transform-origin: 100% 100%;
-}
+    .a2 {
+      left: 55%;
+      transform: scale(1);
+      animation: slideUp 5s linear 1, sideSway 4s ease-in-out 2 alternate;
+      animation-fill-mode: forwards;
+      animation-delay: 0.7s;
+    }
 
-.close .heart {
-  opacity: 0;
-  animation: none;
-}
+    .a3 {
+      left: 10%;
+      transform: scale(0.8);
+      animation: slideUp 7s linear 1, sideSway 2s ease-in-out 6 alternate;
+      animation-fill-mode: forwards;
+      animation-delay: 0.7s;
+    }
 
-.a1 {
-  left: 20%;
-  transform: scale(0.6);
-  animation: slideUp 4s linear 1, sideSway 2s ease-in-out 4 alternate;
-  animation-fill-mode: forwards;
-  animation-delay: 0.7s;
-}
+    @keyframes slideUp {
+      0% { top:0; }
+      100% { top:-600px; }
+    }
 
-.a2 {
-  left: 55%;
-  transform: scale(1);
-  animation: slideUp 5s linear 1, sideSway 4s ease-in-out 2 alternate;
-  animation-fill-mode: forwards;
-  animation-delay: 0.7s;
-}
+    @keyframes sideSway {
+      0% { margin-left:0; }
+      100% { margin-left:50px; }
+    }
 
-.a3 {
-  left: 10%;
-  transform: scale(0.8);
-  animation: slideUp 7s linear 1, sideSway 2s ease-in-out 6 alternate;
-  animation-fill-mode: forwards;
-  animation-delay: 0.7s;
-}
+    /* ---------- RESPONSIVE FIX ---------- */
+    @media (max-width: 480px) {
+      #envelope { transform: scale(0.85); }
+    }
 
-@keyframes slideUp {
-  0% { top: 0; }
-  100% { top: -600px; }
-}
+    @media (max-width: 360px) {
+      #envelope { transform: scale(0.75); }
+    }
 
-@keyframes sideSway {
-  0% { margin-left: 0; }
-  100% { margin-left: 50px; }
-}
-
-body {
-  background-color: #f0e6f6;
-}
-
-.envlope-wrapper {
-  height: 380px;
-}
-
-.reset {
-  text-align: center;
-}
-
-.reset button {
-  font-weight: 800;
-  background: transparent;
-  border: 2px solid #d9534f;
-  color: #d9534f;
-  padding: 10px;
-  margin: 5px;
-  cursor: pointer;
-}
-
-.reset button:hover {
-  background-color: #d9534f;
-  color: #fff;
-}
-
-/* ================== YOUR CSS END ================== */
+    /* ---------- BUTTONS ---------- */
+    .reset { margin-top:25px; text-align:center; }
+    .reset button {
+      font-weight:700;
+      background:transparent;
+      border:2px solid #d9534f;
+      color:#d9534f;
+      padding:10px 18px;
+      margin:5px;
+      cursor:pointer;
+    }
+    .reset button:hover { background:#d9534f; color:#fff; }
   </style>
 </head>
 
 <body>
-
 <div class="envlope-wrapper">
   <div id="envelope" class="close">
     <div class="front flap"></div>
@@ -238,7 +203,7 @@ body {
     <div class="letter">
       <div class="words line1">To: Dost</div>
       <div class="words line2">Dear friend, you are so special</div>
-      <div class="words line3">That every time I talk to you</div>
+      <div class="words line3">Every time I talk to you</div>
       <div class="words line4">my worries stop 💙</div>
     </div>
 
@@ -248,31 +213,21 @@ body {
       <div class="heart a3"></div>
     </div>
   </div>
-</div>
 
-<div class="reset">
-  <button id="open">Open</button>
-  <button id="reset">Close</button>
+  <div class="reset">
+    <button id="open">Open</button>
+    <button id="reset">Close</button>
+  </div>
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script>
-  $(document).ready(function () {
-    var envelope = $("#envelope");
-
-    $("#open").click(function () {
-      envelope.addClass("open").removeClass("close");
-    });
-
-    $("#reset").click(function () {
-      envelope.addClass("close").removeClass("open");
-    });
-
-    envelope.click(function () {
-      envelope.addClass("open").removeClass("close");
-    });
+  $(function(){
+    const envelope = $("#envelope");
+    $("#open").click(()=>envelope.addClass("open").removeClass("close"));
+    $("#reset").click(()=>envelope.addClass("close").removeClass("open"));
+    envelope.click(()=>envelope.addClass("open").removeClass("close"));
   });
 </script>
-
 </body>
 </html>
