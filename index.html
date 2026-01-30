@@ -1,16 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Love Letter</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400..700&display=swap" rel="stylesheet">
 
 <style>
 body{
-  background:#f0e6f6;
   margin:0;
+  background:#f3eaf6;
+  font-family:Arial;
 }
 
 .envlope-wrapper{
@@ -25,15 +26,15 @@ body{
 
 #envelope{
   position:relative;
-  width:280px;
-  height:180px;
-  background:#d9534f;
-  border-radius:0 0 6px 6px;
-  box-shadow:0 4px 20px rgba(0,0,0,.25);
-  perspective:900px;
-  overflow:hidden; /* 🔥 important */
+  width:300px;
+  height:190px;
+  background:#ff6f61;
+  border-radius:0 0 10px 10px;
+  box-shadow:0 10px 25px rgba(0,0,0,.25);
+  overflow:hidden;
 }
 
+/* triangles */
 .front{
   position:absolute;
   width:0;
@@ -42,23 +43,22 @@ body{
 
 /* top flap */
 .flap{
-  border-left:140px solid transparent;
-  border-right:140px solid transparent;
-  border-top:98px solid #d9534f;
-  border-bottom:82px solid transparent;
+  border-left:150px solid transparent;
+  border-right:150px solid transparent;
+  border-top:105px solid #e45757;
+  border-bottom:85px solid transparent;
   transform-origin:top;
-  transition:.6s;
-  z-index:5;
+  transition:0.8s ease;
+  z-index:6;
 }
 
-/* bottom pocket */
+/* pocket */
 .pocket{
-  border-left:140px solid #f5a3a2;
-  border-right:140px solid #f5a3a2;
-  border-bottom:90px solid #ff6f61;
-  border-top:90px solid transparent;
-  border-radius:0 0 6px 6px;
-  z-index:4;
+  border-left:150px solid #ffb1aa;
+  border-right:150px solid #ffb1aa;
+  border-bottom:95px solid #ff6f61;
+  border-top:95px solid transparent;
+  z-index:5;
 }
 
 /* ================= LETTER ================= */
@@ -66,27 +66,83 @@ body{
 .letter{
   position:absolute;
   width:90%;
-  height:140px;
+  height:150px;
   background:white;
-  top:20px;
+  top:35px;
   left:5%;
-  border-radius:6px;
+  border-radius:8px;
+  box-shadow:0 6px 18px rgba(0,0,0,.15);
   font-family:"Dancing Script", cursive;
-  box-shadow:0 2px 20px rgba(0,0,0,.15);
-  transition:.6s ease;
-  z-index:2;
-}
-
-.words{
-  width:90%;
-  margin:auto;
   text-align:center;
+  padding-top:15px;
+  transition:0.8s ease;
+  z-index:3;
+
+  /* hidden initially */
+  transform:translateY(70px);
 }
 
-.line1{margin-top:10px;font-size:.7rem;}
-.line2{margin-top:10px;font-size:1.1rem;}
-.line3{margin-top:6px;font-size:1.1rem;}
-.line4{margin-top:6px;font-size:1.1rem;}
+.letter p{
+  margin:6px;
+  font-size:1.2rem;
+}
+
+/* ================= HEARTS ================= */
+
+.hearts{
+  position:absolute;
+  bottom:10px;
+  left:0;
+  width:100%;
+  height:100%;
+  pointer-events:none;
+  opacity:0;
+  z-index:10;
+}
+
+.heart{
+  position:absolute;
+  bottom:0;
+  width:20px;
+  height:20px;
+  background:#e60073;
+  transform:rotate(45deg);
+}
+
+.heart:before,
+.heart:after{
+  content:"";
+  position:absolute;
+  width:20px;
+  height:20px;
+  background:#e60073;
+  border-radius:50%;
+}
+
+.heart:before{
+  left:-10px;
+}
+
+.heart:after{
+  top:-10px;
+}
+
+.open .hearts{
+  opacity:1;
+}
+
+.open .heart{
+  animation:fly 4s linear infinite;
+}
+
+.heart:nth-child(1){ left:25%; animation-delay:0s; }
+.heart:nth-child(2){ left:50%; animation-delay:1s; }
+.heart:nth-child(3){ left:70%; animation-delay:2s; }
+
+@keyframes fly{
+  from{ transform:translateY(0) rotate(45deg); opacity:1; }
+  to{ transform:translateY(-250px) rotate(45deg); opacity:0; }
+}
 
 /* ================= OPEN ================= */
 
@@ -95,27 +151,33 @@ body{
 }
 
 .open .letter{
-  transform:translateY(-90px); /* ⭐ REAL LOOK */
+  transform:translateY(-40px);
 }
 
 /* ================= BUTTON ================= */
 
-.reset{
-  margin-top:25px;
+.buttons{
+  margin-top:30px;
 }
 
-.reset button{
-  padding:10px 22px;
-  border:2px solid #d9534f;
-  background:transparent;
-  color:#d9534f;
-  font-weight:bold;
+button{
+  padding:12px 28px;
+  margin:5px;
+  border:none;
+  border-radius:5px;
+  font-size:16px;
   cursor:pointer;
 }
 
-.reset button:hover{
-  background:#d9534f;
+#openBtn{
+  background:#e45757;
   color:white;
+}
+
+#closeBtn{
+  border:2px solid #e45757;
+  background:white;
+  color:#e45757;
 }
 </style>
 </head>
@@ -124,42 +186,43 @@ body{
 
 <div class="envlope-wrapper">
 
-<div id="envelope" class="close">
+<div id="envelope">
+
   <div class="front flap"></div>
   <div class="front pocket"></div>
 
   <div class="letter">
-    <div class="words line1">To: Dost</div>
-    <div class="words line2">Dear friend, you are so special</div>
-    <div class="words line3">That every time I talk to you</div>
-    <div class="words line4">my worries stop 💙</div>
+    <p>To: Dost</p>
+    <p>Dear friend, you are so special</p>
+    <p>That every time I talk to you</p>
+    <p>my worries stop 💙</p>
   </div>
+
+  <div class="hearts">
+    <div class="heart"></div>
+    <div class="heart"></div>
+    <div class="heart"></div>
+  </div>
+
 </div>
 
-<div class="reset">
-  <button id="open">Open</button>
-  <button id="reset">Close</button>
+<div class="buttons">
+  <button id="openBtn">Open</button>
+  <button id="closeBtn">Close</button>
 </div>
 
 </div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script>
-$(function(){
-  const envelope = $("#envelope");
+const envelope = document.getElementById("envelope");
 
-  $("#open").click(()=>{
-    envelope.addClass("open");
-  });
+document.getElementById("openBtn").onclick = () => {
+  envelope.classList.add("open");
+};
 
-  $("#reset").click(()=>{
-    envelope.removeClass("open");
-  });
-
-  envelope.click(()=>{
-    envelope.addClass("open");
-  });
-});
+document.getElementById("closeBtn").onclick = () => {
+  envelope.classList.remove("open");
+};
 </script>
 
 </body>
