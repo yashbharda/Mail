@@ -1,181 +1,194 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>Love Letter</title>
+<title>Love Letter</title>
 
-  <!-- Google Font -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400..700&display=swap" rel="stylesheet">
+<!-- Google Font -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400..700&display=swap" rel="stylesheet">
 
-  <style>
-    body {
-      background-color: #f0e6f6;
-      margin: 0;
-      padding: 0;
-    }
+<style>
+body {
+  background-color: #f0e6f6;
+  margin: 0;
+  padding: 0;
+}
 
-    .envlope-wrapper {
-      min-height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      flex-direction: column;
-      overflow: hidden;
-    }
+.envlope-wrapper {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  overflow: hidden;
+}
 
-    #envelope {
-      position: relative;
-      width: 280px;
-      height: 180px;
-      background-color: #d9534f;
-      border-bottom-left-radius: 6px;
-      border-bottom-right-radius: 6px;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.2);
-    }
+/* ---------- ENVELOPE ---------- */
+#envelope {
+  position: relative;
+  width: 280px;
+  height: 180px;
+  background-color: #d9534f;
+  border-bottom-left-radius: 6px;
+  border-bottom-right-radius: 6px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+}
 
-    .front { position: absolute; width:0; height:0; z-index:3; }
+.front { position:absolute; width:0; height:0; z-index:3; }
 
-    .flap {
-      border-left:140px solid transparent;
-      border-right:140px solid transparent;
-      border-bottom:82px solid transparent;
-      border-top:98px solid #d9534f;
-      transform-origin: top;
-      pointer-events: none;
-    }
+.flap {
+  border-left:140px solid transparent;
+  border-right:140px solid transparent;
+  border-top:98px solid #d9534f;
+  border-bottom:82px solid transparent;
+  transform-origin: top;
+  pointer-events:none;
+}
 
-    .pocket {
-      border-left:140px solid #f5a3a2;
-      border-right:140px solid #f5a3a2;
-      border-bottom:90px solid #ff6f61;
-      border-top:90px solid transparent;
-      border-bottom-left-radius:6px;
-      border-bottom-right-radius:6px;
-    }
+.pocket {
+  border-left:140px solid #f5a3a2;
+  border-right:140px solid #f5a3a2;
+  border-bottom:90px solid #ff6f61;
+  border-top:90px solid transparent;
+  border-bottom-left-radius:6px;
+  border-bottom-right-radius:6px;
+}
 
-    .letter {
-      position: relative;
-      background-color: #fff;
-      width: 90%;
-      height: 90%;
-      margin: auto;
-      top: 5%;
-      border-radius:6px;
-      box-shadow: 0 2px 26px rgba(0,0,0,0.12);
-      font-family: "Dancing Script", cursive;
-    }
+.letter {
+  position: relative;
+  background:#fff;
+  width:90%;
+  height:90%;
+  margin:auto;
+  top:5%;
+  border-radius:6px;
+  font-family:"Dancing Script", cursive;
+  box-shadow:0 2px 26px rgba(0,0,0,0.12);
+  z-index:1;
+  transition:0.6s;
+}
 
-    .words {
-      position: absolute;
-      left:10%;
-      width:80%;
-      text-align:center;
-    }
+.words { position:absolute; left:10%; width:80%; text-align:center; }
+.line1 { top:10%; font-size:0.7rem; }
+.line2 { top:30%; font-size:1.1rem; }
+.line3 { top:50%; font-size:1.1rem; }
+.line4 { top:70%; font-size:1.1rem; }
 
-    .line1 { top:10%; font-size:0.7rem; }
-    .line2 { top:30%; font-size:1.1rem; }
-    .line3 { top:50%; font-size:1.1rem; }
-    .line4 { top:70%; font-size:1.1rem; }
+/* ---------- OPEN ---------- */
+.open .flap {
+  transform: rotateX(180deg);
+  transition: 0.6s;
+  z-index:1;
+}
 
-    .open .flap {
-      transform: rotateX(180deg);
-      transition: 0.4s;
-    }
+.open .letter {
+  transform: translateY(-145px);
+  z-index:5;
+}
 
-    .open .letter {
-      transform: translateY(-100px);
-      transition: 0.4s 0.6s;
-    }
+/* ---------- HEARTS ---------- */
+.hearts {
+  position:absolute;
+  top:120px;
+  left:0;
+  right:0;
+  opacity:0;
+  pointer-events:none;
+}
 
-    .close .letter {
-      transform: translateY(0);
-      transition: 0.4s;
-    }
+.open .hearts {
+  opacity:1;
+}
 
-    .hearts {
-      position: absolute;
-      top: 90px;
-      left: 0;
-      right: 0;
-      z-index:2;
-    }
+.heart {
+  position:absolute;
+  bottom:0;
+}
 
-    .heart {
-      position: absolute;
-      bottom: 0;
-      pointer-events: none;
-    }
+.heart:before,
+.heart:after {
+  content:"";
+  position:absolute;
+  width:50px;
+  height:80px;
+  background:#e60073;
+  border-radius:50px 50px 0 0;
+}
 
-    .heart:before,
-    .heart:after {
-      content: "";
-      position: absolute;
-      left: 50px;
-      width: 50px;
-      height: 80px;
-      background: #e60073;
-      border-radius: 50px 50px 0 0;
-      transform: rotate(-45deg);
-      transform-origin: 0 100%;
-    }
+.heart:before {
+  left:50px;
+  transform:rotate(-45deg);
+  transform-origin:0 100%;
+}
 
-    .heart:after {
-      left: 0;
-      transform: rotate(45deg);
-      transform-origin: 100% 100%;
-    }
+.heart:after {
+  left:0;
+  transform:rotate(45deg);
+  transform-origin:100% 100%;
+}
 
-    .a1 {
-      left: 20%;
-      transform: scale(0.6);
-      animation: slideUp 4s linear forwards;
-    }
+/* animate ONLY when open */
+.open .a1 {
+  left:20%;
+  transform:scale(0.6);
+  animation: slideUp 4s linear forwards,
+             sway 2s ease-in-out 4 alternate;
+}
 
-    .a2 {
-      left: 55%;
-      transform: scale(1);
-      animation: slideUp 5s linear forwards;
-    }
+.open .a2 {
+  left:55%;
+  transform:scale(1);
+  animation: slideUp 5s linear forwards,
+             sway 4s ease-in-out 2 alternate;
+}
 
-    .a3 {
-      left: 10%;
-      transform: scale(0.8);
-      animation: slideUp 6s linear forwards;
-    }
+.open .a3 {
+  left:10%;
+  transform:scale(0.8);
+  animation: slideUp 7s linear forwards,
+             sway 2s ease-in-out 6 alternate;
+}
 
-    @keyframes slideUp {
-      from { top: 0; }
-      to { top: -600px; }
-    }
+@keyframes slideUp {
+  from { top:0; }
+  to { top:-600px; }
+}
 
-    .reset {
-      margin-top: 25px;
-    }
+@keyframes sway {
+  from { margin-left:0; }
+  to { margin-left:40px; }
+}
 
-    .reset button {
-      font-weight: 700;
-      background: transparent;
-      border: 2px solid #d9534f;
-      color: #d9534f;
-      padding: 10px 18px;
-      margin: 5px;
-      cursor: pointer;
-    }
+/* ---------- BUTTON ---------- */
+.reset {
+  margin-top:25px;
+}
 
-    .reset button:hover {
-      background: #d9534f;
-      color: white;
-    }
-  </style>
+.reset button {
+  padding:10px 20px;
+  font-weight:bold;
+  border:2px solid #d9534f;
+  background:transparent;
+  color:#d9534f;
+  cursor:pointer;
+  margin:5px;
+}
+
+.reset button:hover {
+  background:#d9534f;
+  color:#fff;
+}
+</style>
 </head>
 
 <body>
 
 <div class="envlope-wrapper">
+
   <div id="envelope" class="close">
 
     <div class="front flap"></div>
@@ -200,25 +213,36 @@
     <button id="open">Open</button>
     <button id="reset">Close</button>
   </div>
+
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script>
-  $(function () {
-    const envelope = $("#envelope");
+$(function () {
 
-    $("#open").click(() => {
-      envelope.addClass("open").removeClass("close");
-    });
+  const envelope = $("#envelope");
 
-    $("#reset").click(() => {
-      envelope.addClass("close").removeClass("open");
-    });
-
-    envelope.click(() => {
-      envelope.addClass("open").removeClass("close");
-    });
+  $("#open").click(function () {
+    envelope.removeClass("close").addClass("open");
   });
+
+  $("#reset").click(function () {
+    envelope.removeClass("open").addClass("close");
+
+    // restart hearts animation
+    $(".heart").removeClass("a1 a2 a3");
+    setTimeout(() => {
+      $(".heart").eq(0).addClass("a1");
+      $(".heart").eq(1).addClass("a2");
+      $(".heart").eq(2).addClass("a3");
+    }, 50);
+  });
+
+  envelope.click(function () {
+    envelope.removeClass("close").addClass("open");
+  });
+
+});
 </script>
 
 </body>
