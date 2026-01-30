@@ -1,25 +1,29 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Love Letter</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400..700&display=swap" rel="stylesheet">
 
 <style>
-body{
-  margin:0;
-  background:#f3eaf6;
-  font-family:Arial;
+*{
+  box-sizing:border-box;
 }
 
-.envlope-wrapper{
+body{
+  margin:0;
+  background:#f4eaf7;
+  font-family:'Dancing Script', cursive;
+}
+
+.wrapper{
   min-height:100vh;
   display:flex;
-  justify-content:center;
-  align-items:center;
   flex-direction:column;
+  align-items:center;
+  justify-content:center;
 }
 
 /* ================= ENVELOPE ================= */
@@ -27,38 +31,62 @@ body{
 #envelope{
   position:relative;
   width:300px;
-  height:190px;
-  background:#ff6f61;
-  border-radius:0 0 10px 10px;
-  box-shadow:0 10px 25px rgba(0,0,0,.25);
-  overflow:hidden;
+  height:200px;
+  perspective:1000px;
 }
 
-/* triangles */
-.front{
+/* back body */
+.envelope-body{
   position:absolute;
-  width:0;
-  height:0;
+  width:100%;
+  height:100%;
+  background:#ff6f61;
+  border-radius:0 0 10px 10px;
+  overflow:hidden;
+  box-shadow:0 15px 40px rgba(0,0,0,.25);
+}
+
+/* bottom triangle */
+.bottom{
+  position:absolute;
+  width:0;height:0;
+  border-left:150px solid transparent;
+  border-right:150px solid transparent;
+  border-top:100px solid #ff7b6d;
+  bottom:0;
+}
+
+/* left */
+.left{
+  position:absolute;
+  width:0;height:0;
+  border-top:100px solid transparent;
+  border-bottom:100px solid transparent;
+  border-left:150px solid #ffa5a0;
+}
+
+/* right */
+.right{
+  position:absolute;
+  right:0;
+  width:0;height:0;
+  border-top:100px solid transparent;
+  border-bottom:100px solid transparent;
+  border-right:150px solid #ffa5a0;
 }
 
 /* top flap */
 .flap{
+  position:absolute;
+  width:0;height:0;
   border-left:150px solid transparent;
   border-right:150px solid transparent;
-  border-top:105px solid #e45757;
-  border-bottom:85px solid transparent;
+  border-bottom:110px solid #ff6f61;
+  top:0;
   transform-origin:top;
-  transition:0.8s ease;
-  z-index:6;
-}
-
-/* pocket */
-.pocket{
-  border-left:150px solid #ffb1aa;
-  border-right:150px solid #ffb1aa;
-  border-bottom:95px solid #ff6f61;
-  border-top:95px solid transparent;
+  transition:0.8s;
   z-index:5;
+  backface-visibility:hidden;
 }
 
 /* ================= LETTER ================= */
@@ -66,51 +94,45 @@ body{
 .letter{
   position:absolute;
   width:90%;
-  height:150px;
+  height:85%;
   background:white;
-  top:35px;
   left:5%;
+  top:10%;
   border-radius:8px;
-  box-shadow:0 6px 18px rgba(0,0,0,.15);
-  font-family:"Dancing Script", cursive;
+  padding:20px;
   text-align:center;
-  padding-top:15px;
-  transition:0.8s ease;
-  z-index:3;
-
-  /* hidden initially */
-  transform:translateY(70px);
+  box-shadow:0 5px 25px rgba(0,0,0,.2);
+  transform:translateY(120px);
+  transition:0.9s;
+  z-index:2;
 }
 
 .letter p{
-  margin:6px;
-  font-size:1.2rem;
+  margin:12px 0;
+  font-size:20px;
 }
 
 /* ================= HEARTS ================= */
 
 .hearts{
   position:absolute;
-  bottom:10px;
   left:0;
-  width:100%;
-  height:100%;
+  right:0;
+  top:90px;
   pointer-events:none;
   opacity:0;
-  z-index:10;
 }
 
 .heart{
   position:absolute;
-  bottom:0;
   width:20px;
   height:20px;
   background:#e60073;
   transform:rotate(45deg);
 }
 
-.heart:before,
-.heart:after{
+.heart::before,
+.heart::after{
   content:"";
   position:absolute;
   width:20px;
@@ -119,39 +141,49 @@ body{
   border-radius:50%;
 }
 
-.heart:before{
-  left:-10px;
-}
-
-.heart:after{
+.heart::before{
   top:-10px;
+  left:0;
 }
 
-.open .hearts{
+.heart::after{
+  left:-10px;
+  top:0;
+}
+
+/* ================= OPEN STATE ================= */
+
+#envelope.open .flap{
+  transform:rotateX(180deg);
+  z-index:1;
+}
+
+#envelope.open .letter{
+  transform:translateY(-40px);
+}
+
+#envelope.open .hearts{
   opacity:1;
 }
 
-.open .heart{
-  animation:fly 4s linear infinite;
+#envelope.open .h1{
+  left:30%;
+  animation:fly 4s linear forwards;
 }
 
-.heart:nth-child(1){ left:25%; animation-delay:0s; }
-.heart:nth-child(2){ left:50%; animation-delay:1s; }
-.heart:nth-child(3){ left:70%; animation-delay:2s; }
+#envelope.open .h2{
+  left:50%;
+  animation:fly 5s linear forwards;
+}
+
+#envelope.open .h3{
+  left:70%;
+  animation:fly 6s linear forwards;
+}
 
 @keyframes fly{
-  from{ transform:translateY(0) rotate(45deg); opacity:1; }
-  to{ transform:translateY(-250px) rotate(45deg); opacity:0; }
-}
-
-/* ================= OPEN ================= */
-
-.open .flap{
-  transform:rotateX(180deg);
-}
-
-.open .letter{
-  transform:translateY(-40px);
+  from{ top:0; opacity:1; }
+  to{ top:-500px; opacity:0; }
 }
 
 /* ================= BUTTON ================= */
@@ -161,67 +193,74 @@ body{
 }
 
 button{
-  padding:12px 28px;
-  margin:5px;
-  border:none;
-  border-radius:5px;
-  font-size:16px;
+  padding:10px 25px;
+  border:2px solid #ff6f61;
+  background:transparent;
+  font-weight:bold;
+  color:#ff6f61;
   cursor:pointer;
+  margin:0 8px;
 }
 
-#openBtn{
-  background:#e45757;
+button:hover{
+  background:#ff6f61;
   color:white;
-}
-
-#closeBtn{
-  border:2px solid #e45757;
-  background:white;
-  color:#e45757;
 }
 </style>
 </head>
 
 <body>
 
-<div class="envlope-wrapper">
+<div class="wrapper">
 
-<div id="envelope">
+  <div id="envelope">
 
-  <div class="front flap"></div>
-  <div class="front pocket"></div>
+    <div class="envelope-body">
+      <div class="left"></div>
+      <div class="right"></div>
+      <div class="bottom"></div>
+    </div>
 
-  <div class="letter">
-    <p>To: Dost</p>
-    <p>Dear friend, you are so special</p>
-    <p>That every time I talk to you</p>
-    <p>my worries stop 💙</p>
+    <div class="flap"></div>
+
+    <div class="letter">
+      <p>To: Dost</p>
+      <p>Dear friend, you are so special</p>
+      <p>That every time I talk to you</p>
+      <p>my worries stop 💙</p>
+    </div>
+
+    <div class="hearts">
+      <div class="heart h1"></div>
+      <div class="heart h2"></div>
+      <div class="heart h3"></div>
+    </div>
+
   </div>
 
-  <div class="hearts">
-    <div class="heart"></div>
-    <div class="heart"></div>
-    <div class="heart"></div>
+  <div class="buttons">
+    <button id="open">Open</button>
+    <button id="close">Close</button>
   </div>
-
-</div>
-
-<div class="buttons">
-  <button id="openBtn">Open</button>
-  <button id="closeBtn">Close</button>
-</div>
 
 </div>
 
 <script>
-const envelope = document.getElementById("envelope");
+const env = document.getElementById("envelope");
 
-document.getElementById("openBtn").onclick = () => {
-  envelope.classList.add("open");
+document.getElementById("open").onclick = ()=>{
+  env.classList.add("open");
 };
 
-document.getElementById("closeBtn").onclick = () => {
-  envelope.classList.remove("open");
+document.getElementById("close").onclick = ()=>{
+  env.classList.remove("open");
+
+  // restart hearts
+  document.querySelectorAll(".heart").forEach(h=>{
+    h.style.animation="none";
+    h.offsetHeight;
+    h.style.animation="";
+  });
 };
 </script>
 
