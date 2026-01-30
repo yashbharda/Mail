@@ -3,196 +3,117 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <title>Love Letter</title>
 
-<!-- Google Font -->
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400..700&display=swap" rel="stylesheet">
 
 <style>
-body {
+body{
   background:#f0e6f6;
   margin:0;
-  padding:0;
 }
 
-.envlope-wrapper {
+.envlope-wrapper{
   min-height:100vh;
   display:flex;
   justify-content:center;
   align-items:center;
   flex-direction:column;
-  overflow:hidden;
 }
 
 /* ================= ENVELOPE ================= */
 
-#envelope {
+#envelope{
   position:relative;
   width:280px;
   height:180px;
   background:#d9534f;
   border-radius:0 0 6px 6px;
   box-shadow:0 4px 20px rgba(0,0,0,.25);
-  perspective:1000px;
+  perspective:900px;
+  overflow:hidden; /* 🔥 important */
 }
 
-.front {
+.front{
   position:absolute;
   width:0;
   height:0;
-  z-index:3;
 }
 
-.flap {
+/* top flap */
+.flap{
   border-left:140px solid transparent;
   border-right:140px solid transparent;
   border-top:98px solid #d9534f;
   border-bottom:82px solid transparent;
   transform-origin:top;
-  transform-style:preserve-3d;
-  backface-visibility:hidden;
-  transition:transform 0.6s ease;
+  transition:.6s;
+  z-index:5;
 }
 
-.pocket {
+/* bottom pocket */
+.pocket{
   border-left:140px solid #f5a3a2;
   border-right:140px solid #f5a3a2;
   border-bottom:90px solid #ff6f61;
   border-top:90px solid transparent;
   border-radius:0 0 6px 6px;
+  z-index:4;
 }
 
 /* ================= LETTER ================= */
 
-.letter {
+.letter{
   position:absolute;
   width:90%;
-  height:90%;
+  height:140px;
   background:white;
-  top:5%;
+  top:20px;
   left:5%;
   border-radius:6px;
   font-family:"Dancing Script", cursive;
-  box-shadow:0 2px 26px rgba(0,0,0,.15);
-  z-index:1;
-  transition:transform 0.6s ease;
+  box-shadow:0 2px 20px rgba(0,0,0,.15);
+  transition:.6s ease;
+  z-index:2;
 }
 
-.words {
-  position:absolute;
-  width:80%;
-  left:10%;
+.words{
+  width:90%;
+  margin:auto;
   text-align:center;
 }
 
-.line1 { top:10%; font-size:.7rem; }
-.line2 { top:30%; font-size:1.1rem; }
-.line3 { top:50%; font-size:1.1rem; }
-.line4 { top:70%; font-size:1.1rem; }
+.line1{margin-top:10px;font-size:.7rem;}
+.line2{margin-top:10px;font-size:1.1rem;}
+.line3{margin-top:6px;font-size:1.1rem;}
+.line4{margin-top:6px;font-size:1.1rem;}
 
-/* ================= OPEN STATE ================= */
+/* ================= OPEN ================= */
 
-.open .flap {
+.open .flap{
   transform:rotateX(180deg);
-  z-index:0;
 }
 
-.open .letter {
-  transform:translateY(-165px);
-  z-index:10;
-}
-
-/* ================= HEARTS ================= */
-
-.hearts {
-  position:absolute;
-  top:120px;
-  left:0;
-  right:0;
-  opacity:0;
-  pointer-events:none;
-}
-
-.open .hearts {
-  opacity:1;
-}
-
-.heart {
-  position:absolute;
-  bottom:0;
-}
-
-.heart::before,
-.heart::after {
-  content:"";
-  position:absolute;
-  width:50px;
-  height:80px;
-  background:#e60073;
-  border-radius:50px 50px 0 0;
-}
-
-.heart::before {
-  left:50px;
-  transform:rotate(-45deg);
-  transform-origin:0 100%;
-}
-
-.heart::after {
-  left:0;
-  transform:rotate(45deg);
-  transform-origin:100% 100%;
-}
-
-/* animate ONLY when open */
-.open .a1 {
-  left:20%;
-  transform:scale(.6);
-  animation:floatUp 4s linear forwards, sway 2s ease-in-out 4 alternate;
-}
-
-.open .a2 {
-  left:55%;
-  transform:scale(1);
-  animation:floatUp 5s linear forwards, sway 4s ease-in-out 2 alternate;
-}
-
-.open .a3 {
-  left:10%;
-  transform:scale(.8);
-  animation:floatUp 7s linear forwards, sway 2s ease-in-out 6 alternate;
-}
-
-@keyframes floatUp {
-  from { top:0; }
-  to { top:-650px; }
-}
-
-@keyframes sway {
-  from { margin-left:0; }
-  to { margin-left:40px; }
+.open .letter{
+  transform:translateY(-90px); /* ⭐ REAL LOOK */
 }
 
 /* ================= BUTTON ================= */
 
-.reset {
+.reset{
   margin-top:25px;
 }
 
-.reset button {
+.reset button{
   padding:10px 22px;
-  font-weight:700;
   border:2px solid #d9534f;
   background:transparent;
   color:#d9534f;
-  margin:5px;
+  font-weight:bold;
   cursor:pointer;
 }
 
-.reset button:hover {
+.reset button:hover{
   background:#d9534f;
   color:white;
 }
@@ -203,60 +124,41 @@ body {
 
 <div class="envlope-wrapper">
 
-  <div id="envelope" class="close">
+<div id="envelope" class="close">
+  <div class="front flap"></div>
+  <div class="front pocket"></div>
 
-    <div class="front flap"></div>
-    <div class="front pocket"></div>
-
-    <div class="letter">
-      <div class="words line1">To: Dost</div>
-      <div class="words line2">Dear friend, you are so special</div>
-      <div class="words line3">Every time I talk to you</div>
-      <div class="words line4">my worries stop 💙</div>
-    </div>
-
-    <div class="hearts">
-      <div class="heart a1"></div>
-      <div class="heart a2"></div>
-      <div class="heart a3"></div>
-    </div>
-
+  <div class="letter">
+    <div class="words line1">To: Dost</div>
+    <div class="words line2">Dear friend, you are so special</div>
+    <div class="words line3">That every time I talk to you</div>
+    <div class="words line4">my worries stop 💙</div>
   </div>
+</div>
 
-  <div class="reset">
-    <button id="open">Open</button>
-    <button id="reset">Close</button>
-  </div>
+<div class="reset">
+  <button id="open">Open</button>
+  <button id="reset">Close</button>
+</div>
 
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-
 <script>
 $(function(){
-
   const envelope = $("#envelope");
 
-  $("#open").click(() => {
-    envelope.removeClass("close").addClass("open");
+  $("#open").click(()=>{
+    envelope.addClass("open");
   });
 
-  $("#reset").click(() => {
-    envelope.removeClass("open").addClass("close");
-
-    // restart hearts animation
-    $(".heart").removeClass("a1 a2 a3");
-    setTimeout(() => {
-      $(".heart").eq(0).addClass("a1");
-      $(".heart").eq(1).addClass("a2");
-      $(".heart").eq(2).addClass("a3");
-    }, 50);
+  $("#reset").click(()=>{
+    envelope.removeClass("open");
   });
 
-  envelope.click(() => {
-    envelope.removeClass("close").addClass("open");
+  envelope.click(()=>{
+    envelope.addClass("open");
   });
-
 });
 </script>
 
