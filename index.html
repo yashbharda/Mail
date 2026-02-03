@@ -1,268 +1,273 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Love Letter</title>
+  <meta charset="UTF-8" />
+  <title>Love Letter</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400..700&display=swap" rel="stylesheet">
+  <!-- Google Font -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400..700&display=swap" rel="stylesheet">
 
-<style>
-*{
-  box-sizing:border-box;
-}
+  <style>
+    * {
+      box-sizing: border-box;
+    }
 
-body{
-  margin:0;
-  background:#f4eaf7;
-  font-family:'Dancing Script', cursive;
-}
+    body {
+      background-color: #f0e6f6;
+      margin: 0;
+      padding: 0;
+      overflow-x: hidden;
+    }
 
-.wrapper{
-  min-height:100vh;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  justify-content:center;
-}
+    .envlope-wrapper {
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+    }
 
-/* ================= ENVELOPE ================= */
+    /* ---------- ENVELOPE ---------- */
+    #envelope {
+      position: relative;
+      width: 280px;
+      height: 180px;
+      background-color: #d9534f;
+      border-bottom-left-radius: 6px;
+      border-bottom-right-radius: 6px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+      transform-origin: center center;
+    }
 
-#envelope{
-  position:relative;
-  width:300px;
-  height:200px;
-  perspective:1000px;
-}
+    .front {
+      position: absolute;
+      width: 0;
+      height: 0;
+      z-index: 3;
+    }
 
-/* back body */
-.envelope-body{
-  position:absolute;
-  width:100%;
-  height:100%;
-  background:#ff6f61;
-  border-radius:0 0 10px 10px;
-  overflow:hidden;
-  box-shadow:0 15px 40px rgba(0,0,0,.25);
-}
+    .flap {
+      border-left: 140px solid transparent;
+      border-right: 140px solid transparent;
+      border-bottom: 82px solid transparent;
+      border-top: 98px solid #d9534f;
+      transform-origin: top;
+      pointer-events: none;
+    }
 
-/* bottom triangle */
-.bottom{
-  position:absolute;
-  width:0;height:0;
-  border-left:150px solid transparent;
-  border-right:150px solid transparent;
-  border-top:100px solid #ff7b6d;
-  bottom:0;
-}
+    .pocket {
+      border-left: 140px solid #f5a3a2;
+      border-right: 140px solid #f5a3a2;
+      border-bottom: 90px solid #ff6f61;
+      border-top: 90px solid transparent;
+      border-bottom-left-radius: 6px;
+      border-bottom-right-radius: 6px;
+    }
 
-/* left */
-.left{
-  position:absolute;
-  width:0;height:0;
-  border-top:100px solid transparent;
-  border-bottom:100px solid transparent;
-  border-left:150px solid #ffa5a0;
-}
+    .letter {
+      position: relative;
+      background-color: #fff;
+      width: 90%;
+      height: 90%;
+      margin: auto;
+      top: 5%;
+      border-radius: 6px;
+      box-shadow: 0 2px 26px rgba(0,0,0,0.12);
+      font-family: "Dancing Script", cursive;
+    }
 
-/* right */
-.right{
-  position:absolute;
-  right:0;
-  width:0;height:0;
-  border-top:100px solid transparent;
-  border-bottom:100px solid transparent;
-  border-right:150px solid #ffa5a0;
-}
+    .words {
+      position: absolute;
+      left: 10%;
+      width: 80%;
+      text-align: center;
+    }
 
-/* top flap */
-.flap{
-  position:absolute;
-  width:0;height:0;
-  border-left:150px solid transparent;
-  border-right:150px solid transparent;
-  border-bottom:110px solid #ff6f61;
-  top:0;
-  transform-origin:top;
-  transition:0.8s;
-  z-index:5;
-  backface-visibility:hidden;
-}
+    .line1 { top: 10%; font-size: 0.7rem; }
+    .line2 { top: 30%; font-size: 1.1rem; }
+    .line3 { top: 50%; font-size: 1.1rem; }
+    .line4 { top: 70%; font-size: 1.1rem; }
 
-/* ================= LETTER ================= */
+    /* ---------- OPEN / CLOSE ---------- */
+    .open .flap {
+      transform: rotateX(180deg);
+      transition: transform 0.4s ease, z-index 0.6s;
+      z-index: 1;
+    }
 
-.letter{
-  position:absolute;
-  width:90%;
-  height:85%;
-  background:white;
-  left:5%;
-  top:10%;
-  border-radius:8px;
-  padding:20px;
-  text-align:center;
-  box-shadow:0 5px 25px rgba(0,0,0,.2);
-  transform:translateY(120px);
-  transition:0.9s;
-  z-index:2;
-}
+    .close .flap {
+      transform: rotateX(0deg);
+      transition: transform 0.4s 0.6s ease, z-index 1s;
+      z-index: 5;
+    }
 
-.letter p{
-  margin:12px 0;
-  font-size:20px;
-}
+    .close .letter {
+      transform: translateY(0);
+      transition: transform 0.4s ease;
+      z-index: 1;
+    }
 
-/* ================= HEARTS ================= */
+    .open .letter {
+      transform: translateY(-100px);
+      transition: transform 0.4s 0.6s ease;
+      z-index: 2;
+    }
 
-.hearts{
-  position:absolute;
-  left:0;
-  right:0;
-  top:90px;
-  pointer-events:none;
-  opacity:0;
-}
+    /* ---------- HEARTS ---------- */
+    .hearts {
+      position: absolute;
+      top: 90px;
+      left: 0;
+      right: 0;
+      z-index: 2;
+    }
 
-.heart{
-  position:absolute;
-  width:20px;
-  height:20px;
-  background:#e60073;
-  transform:rotate(45deg);
-}
+    .heart {
+      position: absolute;
+      bottom: 0;
+      pointer-events: none;
+    }
 
-.heart::before,
-.heart::after{
-  content:"";
-  position:absolute;
-  width:20px;
-  height:20px;
-  background:#e60073;
-  border-radius:50%;
-}
+    .heart:before,
+    .heart:after {
+      content: "";
+      position: absolute;
+      left: 50px;
+      top: 0;
+      width: 50px;
+      height: 80px;
+      background: #e60073;
+      border-radius: 50px 50px 0 0;
+      transform: rotate(-45deg);
+      transform-origin: 0 100%;
+    }
 
-.heart::before{
-  top:-10px;
-  left:0;
-}
+    .heart:after {
+      left: 0;
+      transform: rotate(45deg);
+      transform-origin: 100% 100%;
+    }
 
-.heart::after{
-  left:-10px;
-  top:0;
-}
+    .close .heart {
+      opacity: 0;
+      animation: none;
+    }
 
-/* ================= OPEN STATE ================= */
+    .a1 {
+      left: 20%;
+      transform: scale(0.6);
+      animation: slideUp 4s linear 1, sideSway 2s ease-in-out 4 alternate;
+      animation-fill-mode: forwards;
+      animation-delay: 0.7s;
+    }
 
-#envelope.open .flap{
-  transform:rotateX(180deg);
-  z-index:1;
-}
+    .a2 {
+      left: 55%;
+      transform: scale(1);
+      animation: slideUp 5s linear 1, sideSway 4s ease-in-out 2 alternate;
+      animation-fill-mode: forwards;
+      animation-delay: 0.7s;
+    }
 
-#envelope.open .letter{
-  transform:translateY(-40px);
-}
+    .a3 {
+      left: 10%;
+      transform: scale(0.8);
+      animation: slideUp 7s linear 1, sideSway 2s ease-in-out 6 alternate;
+      animation-fill-mode: forwards;
+      animation-delay: 0.7s;
+    }
 
-#envelope.open .hearts{
-  opacity:1;
-}
+    @keyframes slideUp {
+      0% { top: 0; }
+      100% { top: -600px; }
+    }
 
-#envelope.open .h1{
-  left:30%;
-  animation:fly 4s linear forwards;
-}
+    @keyframes sideSway {
+      0% { margin-left: 0; }
+      100% { margin-left: 50px; }
+    }
 
-#envelope.open .h2{
-  left:50%;
-  animation:fly 5s linear forwards;
-}
+    /* ---------- RESPONSIVE ---------- */
+    @media (max-width: 768px) {
+      #envelope { transform: scale(0.85); }
+    }
 
-#envelope.open .h3{
-  left:70%;
-  animation:fly 6s linear forwards;
-}
+    @media (max-width: 480px) {
+      #envelope { transform: scale(0.75); }
+    }
 
-@keyframes fly{
-  from{ top:0; opacity:1; }
-  to{ top:-500px; opacity:0; }
-}
+    @media (max-width: 360px) {
+      #envelope { transform: scale(0.65); }
+    }
 
-/* ================= BUTTON ================= */
+    /* ---------- BUTTONS ---------- */
+    .reset {
+      margin-top: 25px;
+      text-align: center;
+    }
 
-.buttons{
-  margin-top:30px;
-}
+    .reset button {
+      font-weight: 700;
+      background: transparent;
+      border: 2px solid #d9534f;
+      color: #d9534f;
+      padding: 10px 18px;
+      margin: 5px;
+      cursor: pointer;
+    }
 
-button{
-  padding:10px 25px;
-  border:2px solid #ff6f61;
-  background:transparent;
-  font-weight:bold;
-  color:#ff6f61;
-  cursor:pointer;
-  margin:0 8px;
-}
-
-button:hover{
-  background:#ff6f61;
-  color:white;
-}
-</style>
+    .reset button:hover {
+      background: #d9534f;
+      color: #fff;
+    }
+  </style>
 </head>
 
 <body>
+  <div class="envlope-wrapper">
+    <div id="envelope" class="close">
+      <div class="front flap"></div>
+      <div class="front pocket"></div>
 
-<div class="wrapper">
+      <div class="letter">
+        <div class="words line1">To: Dost</div>
+        <div class="words line2">Dear friend, you are so special</div>
+        <div class="words line3">Every time I talk to you</div>
+        <div class="words line4">my worries stop 💙</div>
+      </div>
 
-  <div id="envelope">
-
-    <div class="envelope-body">
-      <div class="left"></div>
-      <div class="right"></div>
-      <div class="bottom"></div>
+      <div class="hearts">
+        <div class="heart a1"></div>
+        <div class="heart a2"></div>
+        <div class="heart a3"></div>
+      </div>
     </div>
 
-    <div class="flap"></div>
-
-    <div class="letter">
-      <p>To: Dost</p>
-      <p>Dear friend, you are so special</p>
-      <p>That every time I talk to you</p>
-      <p>my worries stop 💙</p>
+    <div class="reset">
+      <button id="open">Open</button>
+      <button id="reset">Close</button>
     </div>
-
-    <div class="hearts">
-      <div class="heart h1"></div>
-      <div class="heart h2"></div>
-      <div class="heart h3"></div>
-    </div>
-
   </div>
 
-  <div class="buttons">
-    <button id="open">Open</button>
-    <button id="close">Close</button>
-  </div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script>
+    $(function () {
+      const envelope = $("#envelope");
 
-</div>
+      $("#open").click(() => {
+        envelope.addClass("open").removeClass("close");
+      });
 
-<script>
-const env = document.getElementById("envelope");
+      $("#reset").click(() => {
+        envelope.addClass("close").removeClass("open");
+      });
 
-document.getElementById("open").onclick = ()=>{
-  env.classList.add("open");
-};
-
-document.getElementById("close").onclick = ()=>{
-  env.classList.remove("open");
-
-  // restart hearts
-  document.querySelectorAll(".heart").forEach(h=>{
-    h.style.animation="none";
-    h.offsetHeight;
-    h.style.animation="";
-  });
-};
-</script>
-
+      envelope.click(() => {
+        envelope.addClass("open").removeClass("close");
+      });
+    });
+  </script>
 </body>
 </html>
